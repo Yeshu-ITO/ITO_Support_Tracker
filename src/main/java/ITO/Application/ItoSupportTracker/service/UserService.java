@@ -34,14 +34,16 @@ public class UserService {
     private MarklogicConnection marklogicConnection;
 
 
-    //Working
+    // Method to Create New Ticket
     public void createTicket(Ticket ticket, Long userId) throws JAXBException {
 
+        // Check if the Category ID , Sub Category ID and User ID is Valid
         XMLDocumentManager docMgr = marklogicConnection.client.newXMLDocumentManager();
         DocumentDescriptor category = docMgr.exists("/Category/" + constants.CATEGORY_COLLECTION + "/CTR" + ticket.getCategoryId());
         DocumentDescriptor subCategory = docMgr.exists("/SubCategory/" + constants.SUBCATEGORY_COLLECTION + "/CTR" + ticket.getCategoryId() +  "+SCTR" + ticket.getSubCategoryId());
         DocumentDescriptor user = docMgr.exists("/User/" + constants.USER_COLLECTION + "/USR" + userId);
 
+        // If any of the ID is Invalid throw error
         if(category == null || subCategory == null || user == null || Integer.parseInt(ticket.getPriority())-1 > Constants.Priority.values().length)
             throw new ResourceNotFoundException("Invalid CategoryId or SubCategory Id or Priority Id or User Id");
 
@@ -65,9 +67,10 @@ public class UserService {
         }
     }
 
-    //Working
+    //Method to get all Tickets of a User
     public List<TicketDto> getAllTicketOfUser(Long userId) throws JAXBException {
 
+        // Check if the User ID is Valid
         XMLDocumentManager docMgr = marklogicConnection.client.newXMLDocumentManager();
         DocumentDescriptor user = docMgr.exists("/User/" + constants.USER_COLLECTION + "/USR" + userId);
 
@@ -82,11 +85,12 @@ public class UserService {
             throw new ResourceNotFoundException("Invalid User Id");
     }
 
-    //Working
+    // Method to get Details of a Ticket of a User
     public Ticket getTicketDetails(Long ticketId, Long userId) throws JAXBException {
 
         String uri = "/UserTicket/" + constants.TICKET_COLLECTION + "/TKT" + ticketId + "+USR" + userId;
 
+        // If the Ticket ID and User ID is Correct
         if(marklogicConnection.docMgr.exists(uri) != null){
             return userRepository.findByTicketId(uri);
         }
@@ -96,9 +100,10 @@ public class UserService {
     }
 
 
-    //Working
+    // Method to Add Comment to a Ticket By User
     public void addComment(TicketComment ticketComment, Long ticketId, Long userId ) throws JAXBException {
 
+        // Check if Ticket ID and User ID are Valid
         DocumentDescriptor ticket = marklogicConnection.docMgr.exists("/UserTicket/" + constants.TICKET_COLLECTION + "/TKT" + ticketId + "+USR" + userId);
 
         if(ticket != null){

@@ -24,7 +24,6 @@ public class adminRepository {
     private Constants constants;
 
 
-    //Working
     public SearchHandle getAllTickets() {
 
         QueryManager queryManager = marklogicConnection.client.newQueryManager();
@@ -38,7 +37,7 @@ public class adminRepository {
         return queryManager.search(structuredQueryDefinition,new SearchHandle());
     }
 
-    //Working
+
     public SearchHandle getTicketDetails(Long ticketId, String path) throws JAXBException {
 
         QueryManager queryManager = marklogicConnection.client.newQueryManager();
@@ -54,17 +53,17 @@ public class adminRepository {
         return queryManager.search(structuredQueryDefinition,new SearchHandle());
     }
 
-    //Working
+
     public void updateDocument(String uri, DocumentMetadataHandle metadataHandle, DOMHandle contentHandle){
         marklogicConnection.docMgr.write(uri,metadataHandle,contentHandle);
     }
 
-    //Working
+
     public void insertDocument(String uri, DocumentMetadataHandle metadataHandle, StringHandle data) throws JAXBException {
             marklogicConnection.docMgr.write(uri,metadataHandle,data);
     }
 
-    //Working
+
     public SearchHandle getCommentDetails(Long ticketId,String path) throws JAXBException {
 
         QueryManager queryManager = marklogicConnection.client.newQueryManager();

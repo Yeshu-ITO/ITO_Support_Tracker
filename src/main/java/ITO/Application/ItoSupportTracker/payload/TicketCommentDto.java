@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Communication {
+public class TicketCommentDto {
 
     private String name;
     private String message;

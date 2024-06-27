@@ -1,7 +1,8 @@
-package ITO.Application.ItoSupportTracker.payload;
+package ITO.Application.ItoSupportTracker.utility;
 
 
 import ITO.Application.ItoSupportTracker.model.Ticket;
+import ITO.Application.ItoSupportTracker.payload.TicketCommentDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,6 @@ import java.util.List;
 public class TicketCommentWrapper {
 
     public Ticket ticket;
-    public List<Communication> communications;
+    public List<TicketCommentDto> ticketCommentDtos;
 
 }

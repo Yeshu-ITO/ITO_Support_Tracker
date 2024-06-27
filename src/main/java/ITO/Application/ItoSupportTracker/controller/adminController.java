@@ -20,7 +20,7 @@ public class adminController {
     @Autowired
     private adminService adminService;
 
-    //Working
+
     @RequestMapping("/allTickets")
     public ResponseEntity<Object> getAllTickets() {
         try{
@@ -31,7 +31,7 @@ public class adminController {
         }
     }
 
-    //Working
+
     @RequestMapping("/getTicketDetails")
     public ResponseEntity<Object> getTicketDetails(@RequestParam Long ticketId) {
         try{
@@ -42,7 +42,7 @@ public class adminController {
         }
     }
 
-    //Working
+
     @PostMapping("/setAssignee")
     public ResponseEntity<String> setAssignee(@RequestParam Long ticketId, @RequestParam Long assigneeId){
         try{
@@ -54,7 +54,7 @@ public class adminController {
         }
     }
 
-    //Working
+
     @PostMapping("/changeStatus")
     public ResponseEntity<Object> changeStatus(@RequestParam Long ticketId, @RequestParam Long userId, @RequestParam Long statusId){
 
@@ -68,7 +68,7 @@ public class adminController {
 
     }
 
-    //Working
+
     @PostMapping("/addComment")
     public ResponseEntity<Object> addCommentToUserTicket(@RequestBody TicketComment ticketComment, @RequestParam Long adminId, @RequestParam Long ticketId) {
         try{

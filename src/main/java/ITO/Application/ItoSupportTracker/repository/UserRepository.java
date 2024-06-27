@@ -48,7 +48,6 @@ public class UserRepository {
     public final ObjectMapper objectMapper = new ObjectMapper();
 
 
-    //Working
     public void createTicket(Ticket ticket, DocumentMetadataHandle metadataHandle) throws JAXBException {
 
         JAXBContext context = JAXBContext.newInstance(Ticket.class);
@@ -66,7 +65,6 @@ public class UserRepository {
     }
 
 
-    //Working
     public List<TicketDto> getAllTicketOfUser(Long userId) throws JAXBException {
 
         List<TicketDto> allTicketsOfUser = new ArrayList<>();
@@ -103,7 +101,6 @@ public class UserRepository {
     }
 
 
-    //Working
     public Ticket findByTicketId(String uri) throws JAXBException {
 
         StringHandle contentHandle = new StringHandle();
@@ -118,7 +115,6 @@ public class UserRepository {
     }
 
 
-    //Working
     public void addCommentToUserTicket(TicketComment ticketComment, DocumentMetadataHandle metadataHandle) throws JAXBException {
 
         JAXBContext context = JAXBContext.newInstance(TicketComment.class);
@@ -135,7 +131,6 @@ public class UserRepository {
 
     }
 
-    //Working
     public String getUserName(Long userId) throws JAXBException {
 
         QueryManager queryManager = marklogicConnection.client.newQueryManager();

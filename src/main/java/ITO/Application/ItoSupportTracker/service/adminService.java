@@ -4,8 +4,8 @@ package ITO.Application.ItoSupportTracker.service;
 import ITO.Application.ItoSupportTracker.config.MarklogicConnection;
 import ITO.Application.ItoSupportTracker.model.Ticket;
 import ITO.Application.ItoSupportTracker.model.TicketComment;
-import ITO.Application.ItoSupportTracker.payload.Communication;
-import ITO.Application.ItoSupportTracker.payload.TicketCommentWrapper;
+import ITO.Application.ItoSupportTracker.payload.TicketCommentDto;
+import ITO.Application.ItoSupportTracker.utility.TicketCommentWrapper;
 import ITO.Application.ItoSupportTracker.payload.TicketDto;
 import ITO.Application.ItoSupportTracker.repository.adminRepository;
 import ITO.Application.ItoSupportTracker.utility.Constants;
@@ -55,7 +55,7 @@ public class adminService {
     @Autowired
     private IdGenerator idGenerator;
 
-    //Working
+    // Method to get All the Tickets
     public List<TicketDto> getAllTickets() throws JAXBException {
 
         SearchHandle resultHandle = adminRepository.getAllTickets();
@@ -80,7 +80,7 @@ public class adminService {
             throw new ResourceNotFoundException("NO Tickets found");
     }
 
-    //Working
+    // Method to get the Details of a Ticket and all its Communication
     public TicketCommentWrapper getTicketDetails(Long ticketId) throws JAXBException {
 
         //Get Ticket Details
@@ -114,23 +114,25 @@ public class adminService {
             ticketComments.add(ticketComment);
         }
 
-        List<Communication> Communication = ticketComments.stream().map(ticketComment -> modelMapper.map(ticketComment, ITO.Application.ItoSupportTracker.payload.Communication.class)).toList();
+        List<TicketCommentDto> TicketCommentDto = ticketComments.stream().map(ticketComment -> modelMapper.map(ticketComment, TicketCommentDto.class)).toList();
 
         ticketCommentWrapper.setTicket(ticket);
-        ticketCommentWrapper.setCommunications(Communication);
+        ticketCommentWrapper.setTicketCommentDtos(TicketCommentDto);
 
         return  ticketCommentWrapper;
     }
 
-    //Working
+    // Method to set an Assignee to a Ticket
     public void setAssignee(Long ticketId, Long assigneeId) throws JAXBException {
 
+        // Check if the Assignee ID is valid
         DocumentDescriptor admin  = marklogicConnection.docMgr.exists("/Admin/"+ constants.ADMIN_COLLECTION + "/ADM" + assigneeId);
 
         if(admin != null){
             String path = "/UserTicket/ticketId";
             SearchHandle searchHandle = adminRepository.getTicketDetails(ticketId,path);
             MatchDocumentSummary[] results = searchHandle.getMatchResults();
+            // If the Ticket ID is Invalid
             if(results.length != 1)
                 throw new ResourceNotFoundException("Invalid Ticket Id");
 
@@ -140,10 +142,12 @@ public class adminService {
             marklogicConnection.docMgr.read(results[0].getUri(),contentHandle);
             Document doc = contentHandle.get();
 
+            // Update the Assignee Node
             NodeList assigneeNode = doc.getElementsByTagName("assigneeId");
             Element assigneElement = (Element) assigneeNode.item(0);
             assigneElement.setTextContent(String.valueOf(assigneeId));
 
+            //Update the LastModifiedDateTime
             NodeList last_modified_dataTime = doc.getElementsByTagName("lastModifiedDateTime");
             Element last_modified_dataTime_element = (Element) last_modified_dataTime.item(0);
             last_modified_dataTime_element.setTextContent(String.valueOf(LocalDateTime.now()));
@@ -159,14 +163,16 @@ public class adminService {
             throw new ResourceNotFoundException("Invalid Admin Id");
     }
 
-    //Working
+    // Method to change the Status of the Ticket
     public String changeStatus(Long ticketId, Long userId, Long statusId){
 
         String uri = "/UserTicket/"+ constants.TICKET_COLLECTION + "/TKT" + ticketId + "+USR" + userId;
 
+        // Check if the Ticket ID and User ID is Valid
         if(marklogicConnection.docMgr.exists(uri) == null)
             throw new ResourceNotFoundException("Invalid Ticket Id or User Id");
 
+        // Check if the Status ID is Valid
         if(statusId-1 > Constants.Status.values().length)
             throw new ResourceNotFoundException("Invalid Status Id");
 
@@ -176,11 +182,13 @@ public class adminService {
         marklogicConnection.docMgr.read(uri,contentHandle);
         Document doc = contentHandle.get();
 
+        // Update the Status
         NodeList statusNode = doc.getElementsByTagName("status");
         Element statusElement = (Element) statusNode.item(0);
         String oldStatus = statusElement.getTextContent();
         statusElement.setTextContent(String.valueOf(Constants.Status.values()[Math.toIntExact(statusId)-1]));
 
+        // Update the LastModifiedDateTime
         NodeList last_modified_dataTime = doc.getElementsByTagName("lastModifiedDateTime");
         Element last_modified_dataTime_element = (Element) last_modified_dataTime.item(0);
         last_modified_dataTime_element.setTextContent(String.valueOf(LocalDateTime.now()));
@@ -195,11 +203,12 @@ public class adminService {
         return oldStatus;
     }
 
-    //Working
+    // Method to Add Comment By Admin
     public void addAdminComment(TicketComment ticketComment, Long adminId, Long ticketId) throws JAXBException {
 
         String uri = "/Admin/" + constants.ADMIN_COLLECTION + "/ADM" +  adminId;
 
+        // If the Admin ID is valid
         if(marklogicConnection.docMgr.exists(uri) != null){
 
             //Get Admin Name
