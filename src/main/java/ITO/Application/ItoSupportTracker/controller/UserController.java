@@ -33,7 +33,7 @@ public class UserController {
     }
 
 
-    @RequestMapping("/allTickets")
+    @GetMapping("/allTickets")
     public ResponseEntity<Object> getUserTickets(@RequestParam Long userId) throws JAXBException {
         try{
             return ResponseEntity.ok(this.userService.getAllTicketOfUser(userId));
@@ -44,7 +44,7 @@ public class UserController {
     }
 
 
-    @RequestMapping("/ticketId")
+    @GetMapping("/ticketId")
     public ResponseEntity<Object> getUserTicketById(@RequestParam Long userId, @RequestParam Long ticketId) throws JAXBException {
         try{
             return ResponseEntity.ok(this.userService.getTicketDetails(ticketId,userId));
@@ -55,7 +55,7 @@ public class UserController {
     }
 
 
-    @RequestMapping("/addComment")
+    @PostMapping("/addComment")
     public ResponseEntity<Object> addCommentToUserTicket(@RequestBody TicketComment ticketComment, @RequestParam Long userId, @RequestParam Long ticketId) throws JAXBException {
         try{
             this.userService.addComment(ticketComment,ticketId,userId);

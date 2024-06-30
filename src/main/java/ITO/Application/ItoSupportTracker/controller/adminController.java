@@ -21,7 +21,7 @@ public class adminController {
     private adminService adminService;
 
 
-    @RequestMapping("/allTickets")
+    @GetMapping("/allTickets")
     public ResponseEntity<Object> getAllTickets() {
         try{
             return ResponseEntity.ok(adminService.getAllTickets());
@@ -32,7 +32,7 @@ public class adminController {
     }
 
 
-    @RequestMapping("/getTicketDetails")
+    @GetMapping("/getTicketDetails")
     public ResponseEntity<Object> getTicketDetails(@RequestParam Long ticketId) {
         try{
             return  ResponseEntity.ok(adminService.getTicketDetails(ticketId));
@@ -72,7 +72,7 @@ public class adminController {
     @PostMapping("/addComment")
     public ResponseEntity<Object> addCommentToUserTicket(@RequestBody TicketComment ticketComment, @RequestParam Long adminId, @RequestParam Long ticketId) {
         try{
-            this.adminService.addAdminComment(ticketComment,ticketId,adminId);
+            this.adminService.addAdminComment(ticketComment,adminId,ticketId);
             return ResponseEntity.status(HttpStatus.OK).body("Comment added Successfully");
         }
         catch (RuntimeException | JAXBException e){

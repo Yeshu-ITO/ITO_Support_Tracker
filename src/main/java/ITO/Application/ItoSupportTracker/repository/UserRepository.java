@@ -37,16 +37,10 @@ public class UserRepository {
     private MarklogicConnection marklogicConnection;
 
     @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
     private Constants constants;
 
     @Autowired
     private ModelMapper modelMapper;
-
-    public final ObjectMapper objectMapper = new ObjectMapper();
-
 
     public void createTicket(Ticket ticket, DocumentMetadataHandle metadataHandle) throws JAXBException {
 
