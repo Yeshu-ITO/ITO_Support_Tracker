@@ -25,6 +25,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,7 +125,6 @@ public class UserRepository {
         String existingXml = contentHandle.get();
         int index = existingXml.indexOf("</Comments>");
         StringHandle newXml;
-
         if(index != -1){
             StringBuilder sb = new StringBuilder(existingXml);
             sb.insert(index,writer.toString().substring(writer.toString().indexOf("<TicketComment>")));

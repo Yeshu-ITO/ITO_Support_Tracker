@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
 
             ticketComment.setCommentId(idGenerator.getNextCommentId());
             ticketComment.setName("User - " + userRepository.getUserName(userId));
-            ticketComment.setCreateDateTime(LocalDateTime.now());
+            ticketComment.setTicketCreateDateTime(LocalDateTime.now());
 
             DocumentMetadataHandle metadataHandle = new DocumentMetadataHandle();
             metadataHandle.getCollections().add(constants.TICKET_COLLECTION);

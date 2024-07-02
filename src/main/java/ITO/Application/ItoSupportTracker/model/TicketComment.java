@@ -29,10 +29,10 @@ public class TicketComment {
     @XmlElement
     private String message;
     @XmlElement
-    private String createDateTime;
+    private String ticketCreateDateTime;
 
-    public void setCreateDateTime(LocalDateTime dateTime) {
-        this.createDateTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+    public void setTicketCreateDateTime(LocalDateTime dateTime) {
+        this.ticketCreateDateTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
     }
 
 }

@@ -2,11 +2,9 @@ package ITO.Application.ItoSupportTracker.controller;
 
 
 import ITO.Application.ItoSupportTracker.model.TicketComment;
-import ITO.Application.ItoSupportTracker.repository.adminRepository;
 import ITO.Application.ItoSupportTracker.service.UserService;
 import ITO.Application.ItoSupportTracker.service.adminService;
 import ITO.Application.ItoSupportTracker.utility.Constants;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.marklogic.client.ResourceNotFoundException;
 import jakarta.xml.bind.JAXBException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +24,17 @@ public class adminController {
 
 
     @GetMapping("/allTickets")
-    public ResponseEntity<Object> getAllTickets(@RequestParam(value = "userId", defaultValue = "0",required = false) Long userId) {
+    public ResponseEntity<Object> getAllTickets(@RequestParam(value = "userId", defaultValue = "0",required = false) Long userId,
+                                                @RequestParam(value = "assigneeId", defaultValue = "0",required = false) Long assigneeId)
+    {
         try{
-            if(userId != 0){
+            if(userId != 0 && assigneeId != 0){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Provide Either User ID or Assignee Id");
+            }else if(userId != 0){
                 return ResponseEntity.ok(userService.getAllTicketOfUser(userId));
-            }else{
+            }else if(assigneeId != 0){
+                return ResponseEntity.ok(adminService.getAssigneeTickets(assigneeId));
+            }else {
                 return ResponseEntity.ok(adminService.getAllTickets());
             }
         }
@@ -78,14 +82,15 @@ public class adminController {
 
 
     @PostMapping("/addComment")
-    public ResponseEntity<Object> addCommentToUserTicket(@RequestBody TicketComment ticketComment, @RequestParam Long adminId, @RequestParam Long ticketId) {
+    public ResponseEntity<Object> addCommentToUserTicket(@RequestBody TicketComment ticketComment, @RequestParam Long adminId) {
         try{
-            this.adminService.addAdminComment(ticketComment,adminId,ticketId);
+            this.adminService.addAdminComment(ticketComment,adminId);
             return ResponseEntity.status(HttpStatus.OK).body("Comment added Successfully");
         }
         catch (RuntimeException | JAXBException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
 
 }
