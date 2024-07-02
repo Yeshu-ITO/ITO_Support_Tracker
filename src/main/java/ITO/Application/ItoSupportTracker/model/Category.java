@@ -2,13 +2,12 @@ package ITO.Application.ItoSupportTracker.model;
 
 
 import com.marklogic.client.pojo.annotation.Id;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,5 +20,7 @@ public class Category {
     private Long categoryId;
     @XmlElement
     private String categoryDesc;
-
+    @XmlElementWrapper(name = "SubCategories")
+    @XmlElement
+    private List<SubCategory> subCategory;
 }

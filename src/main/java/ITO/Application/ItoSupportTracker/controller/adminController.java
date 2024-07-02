@@ -3,6 +3,7 @@ package ITO.Application.ItoSupportTracker.controller;
 
 import ITO.Application.ItoSupportTracker.model.TicketComment;
 import ITO.Application.ItoSupportTracker.repository.adminRepository;
+import ITO.Application.ItoSupportTracker.service.UserService;
 import ITO.Application.ItoSupportTracker.service.adminService;
 import ITO.Application.ItoSupportTracker.utility.Constants;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,11 +21,18 @@ public class adminController {
     @Autowired
     private adminService adminService;
 
+    @Autowired
+    private UserService userService;
+
 
     @GetMapping("/allTickets")
-    public ResponseEntity<Object> getAllTickets() {
+    public ResponseEntity<Object> getAllTickets(@RequestParam(value = "userId", defaultValue = "0",required = false) Long userId) {
         try{
-            return ResponseEntity.ok(adminService.getAllTickets());
+            if(userId != 0){
+                return ResponseEntity.ok(userService.getAllTicketOfUser(userId));
+            }else{
+                return ResponseEntity.ok(adminService.getAllTickets());
+            }
         }
         catch (ResourceNotFoundException | JAXBException e ) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

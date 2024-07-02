@@ -2,22 +2,22 @@ package ITO.Application.ItoSupportTracker.model;
 
 
 import com.marklogic.client.pojo.annotation.Id;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 @Getter
 @Setter
 @Data
 @NoArgsConstructor
-@XmlRootElement(name = "TicketComment")
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "TicketComment")
 public class TicketComment {
 
     @Id
@@ -25,12 +25,14 @@ public class TicketComment {
     @XmlElement
     private Long ticketId;
     @XmlElement
-    private Long userId;
-    @XmlElement
     private String name;
     @XmlElement
     private String message;
     @XmlElement
     private String createDateTime;
+
+    public void setCreateDateTime(LocalDateTime dateTime) {
+        this.createDateTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+    }
 
 }

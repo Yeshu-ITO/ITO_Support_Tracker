@@ -33,10 +33,10 @@ public class GlobalController {
         globalRespository.addCategory(category);
     }
 
-    @PostMapping("/addSubCategory")
-    public void addSubCategory(@RequestBody SubCategory subCategory, @RequestParam Long categoryId, @RequestParam Long subCategoryId) throws JAXBException {
-        globalRespository.addSubCategory(subCategory,categoryId,subCategoryId);
-    }
+//    @PostMapping("/addSubCategory")
+//    public void addSubCategory(@RequestBody SubCategory subCategory, @RequestParam Long categoryId, @RequestParam Long subCategoryId) throws JAXBException {
+//        globalRespository.addSubCategory(subCategory,categoryId,subCategoryId);
+//    }
 
 
 

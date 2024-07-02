@@ -19,8 +19,8 @@ public class SubCategory {
 
     @Id
     private Long subCategoryId;
-    @XmlElement
-    private Long categoryId;
+//    @XmlElement
+//    private Long categoryId;
     @XmlElement
     private String subCategoryDesc;
 }

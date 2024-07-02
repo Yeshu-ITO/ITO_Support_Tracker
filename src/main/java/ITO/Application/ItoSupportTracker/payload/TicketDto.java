@@ -10,8 +10,8 @@ import lombok.Setter;
 public class TicketDto {
 
     private Long ticketId;
-    private Long categoryId;
-    private Long subCategoryId;
+    private String categoryId;
+    private String subCategoryId;
     private Long assigneeId;
     private String subject;
     private String status;

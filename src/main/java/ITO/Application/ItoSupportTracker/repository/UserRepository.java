@@ -4,9 +4,7 @@ import ITO.Application.ItoSupportTracker.config.MarklogicConnection;
 import ITO.Application.ItoSupportTracker.model.Ticket;
 import ITO.Application.ItoSupportTracker.model.TicketComment;
 import ITO.Application.ItoSupportTracker.utility.Constants;
-import ITO.Application.ItoSupportTracker.utility.IdGenerator;
 import ITO.Application.ItoSupportTracker.payload.TicketDto;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marklogic.client.io.*;
 
 import java.io.StringReader;
@@ -55,7 +53,6 @@ public class UserRepository {
                 "/UserTicket/" + constants.TICKET_COLLECTION + "/TKT" + ticket.getTicketId() + "+USR" + ticket.getReportedId(),
                 metadataHandle,
                 new StringHandle(writer.toString()));
-
     }
 
 
@@ -109,7 +106,7 @@ public class UserRepository {
     }
 
 
-    public void addCommentToUserTicket(TicketComment ticketComment, DocumentMetadataHandle metadataHandle) throws JAXBException {
+    public void addCommentToUserTicket(TicketComment ticketComment, DocumentMetadataHandle metadataHandle, Long userId) throws JAXBException {
 
         JAXBContext context = JAXBContext.newInstance(TicketComment.class);
         Marshaller marshaller = context.createMarshaller();
@@ -118,10 +115,31 @@ public class UserRepository {
         StringWriter writer = new StringWriter();
         marshaller.marshal(ticketComment,writer);
 
+        StringHandle contentHandle = new StringHandle();
+        marklogicConnection.docMgr.read(
+                "/UserTicket/" + constants.TICKET_COLLECTION + "/TKT" + ticketComment.getTicketId() + "+USR" + userId,
+                contentHandle);
+
+        String existingXml = contentHandle.get();
+        int index = existingXml.indexOf("</Comments>");
+        StringHandle newXml;
+
+        if(index != -1){
+            StringBuilder sb = new StringBuilder(existingXml);
+            sb.insert(index,writer.toString().substring(writer.toString().indexOf("<TicketComment>")));
+            newXml = new StringHandle(sb.toString());
+        }
+        else{
+            int newIndex = existingXml.indexOf("</UserTicket>");
+            StringBuilder sb = new StringBuilder(existingXml);
+            sb.insert(newIndex,"<Comments>" + writer.toString().substring(writer.toString().indexOf("<TicketComment>")) + "</Comments>");
+            newXml = new StringHandle(sb.toString());
+        }
+
         marklogicConnection.docMgr.write(
-                "/TicketComment/" + constants.COMMENT_COLLECTION + "/CMT" + ticketComment.getCommentId() +"+TKT" + ticketComment.getTicketId(),
+                "/UserTicket/" + constants.TICKET_COLLECTION + "/TKT" + ticketComment.getTicketId() + "+USR" + userId,
                 metadataHandle,
-                new StringHandle(writer.toString()));
+                newXml);
 
     }
 

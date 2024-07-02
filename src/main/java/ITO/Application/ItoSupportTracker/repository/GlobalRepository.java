@@ -3,7 +3,6 @@ package ITO.Application.ItoSupportTracker.repository;
 import ITO.Application.ItoSupportTracker.config.MarklogicConnection;
 import ITO.Application.ItoSupportTracker.model.AdminTeam;
 import ITO.Application.ItoSupportTracker.model.Category;
-import ITO.Application.ItoSupportTracker.model.SubCategory;
 import ITO.Application.ItoSupportTracker.model.User;
 import ITO.Application.ItoSupportTracker.utility.Constants;
 import ITO.Application.ItoSupportTracker.utility.IdGenerator;
@@ -97,28 +96,28 @@ public class GlobalRepository {
 
     }
 
-    public void addSubCategory(SubCategory subCategory,Long categoryId, Long subCategoryId) throws JAXBException {
-
-        subCategory.setSubCategoryId(subCategoryId);
-        subCategory.setCategoryId(categoryId);
-
-        DocumentMetadataHandle metadataHandle = new DocumentMetadataHandle();
-        metadataHandle.getCollections().add(constants.ITO_TRACKER);
-        metadataHandle.getCollections().add(constants.SUBCATEGORY_COLLECTION);
-
-        JAXBContext context = JAXBContext.newInstance(SubCategory.class);
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,true);
-
-        StringWriter writer = new StringWriter();
-        marshaller.marshal(subCategory,writer);
-
-        marklogicConnection.docMgr.write(
-                "/SubCategory/" + constants.SUBCATEGORY_COLLECTION + "/CTR" + subCategory.getCategoryId() +  "+SCTR" + subCategory.getSubCategoryId(),
-                metadataHandle,
-                new StringHandle(writer.toString()));
-
-    }
+//    public void addSubCategory(SubCategory subCategory,Long categoryId, Long subCategoryId) throws JAXBException {
+//
+//        subCategory.setSubCategoryId(subCategoryId);
+//        subCategory.setCategoryId(categoryId);
+//
+//        DocumentMetadataHandle metadataHandle = new DocumentMetadataHandle();
+//        metadataHandle.getCollections().add(constants.ITO_TRACKER);
+//        metadataHandle.getCollections().add(constants.SUBCATEGORY_COLLECTION);
+//
+//        JAXBContext context = JAXBContext.newInstance(SubCategory.class);
+//        Marshaller marshaller = context.createMarshaller();
+//        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,true);
+//
+//        StringWriter writer = new StringWriter();
+//        marshaller.marshal(subCategory,writer);
+//
+//        marklogicConnection.docMgr.write(
+//                "/SubCategory/" + constants.SUBCATEGORY_COLLECTION + "/CTR" + subCategory.getCategoryId() +  "+SCTR" + subCategory.getSubCategoryId(),
+//                metadataHandle,
+//                new StringHandle(writer.toString()));
+//
+//    }
 
 
 

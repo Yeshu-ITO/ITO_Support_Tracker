@@ -204,7 +204,7 @@ public class adminService {
     }
 
     // Method to Add Comment By Admin
-    public void     addAdminComment(TicketComment ticketComment, Long adminId, Long ticketId) throws JAXBException {
+    public void addAdminComment(TicketComment ticketComment, Long adminId, Long ticketId) throws JAXBException {
 
         String uri = "/Admin/" + constants.ADMIN_COLLECTION + "/ADM" +  adminId;
 
@@ -228,9 +228,9 @@ public class adminService {
 
             //Set Necessary Values
             ticketComment.setCommentId(idGenerator.getNextCommentId());
-            ticketComment.setUserId(adminId);
+//            ticketComment.setUserId(adminId);
             ticketComment.setTicketId(ticketId);
-            ticketComment.setCreateDateTime(String.valueOf(LocalDateTime.now()));
+            ticketComment.setCreateDateTime(LocalDateTime.now());
             ticketComment.setName("Admin - " + adminName);
 
             DocumentMetadataHandle metadataHandle = new DocumentMetadataHandle();
