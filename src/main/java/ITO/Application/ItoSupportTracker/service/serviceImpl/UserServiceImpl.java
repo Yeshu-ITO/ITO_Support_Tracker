@@ -18,7 +18,6 @@ import com.marklogic.client.query.QueryManager;
 import com.marklogic.client.query.StructuredQueryBuilder;
 import com.marklogic.client.query.StructuredQueryDefinition;
 import jakarta.xml.bind.JAXBException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -42,9 +41,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private MarklogicConnection marklogicConnection;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Override
     public void createTicket(Ticket ticket, Long userId) throws JAXBException {

@@ -2,6 +2,8 @@ package ITO.Application.ItoSupportTracker.model;
 
 
 import com.marklogic.client.pojo.annotation.Id;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.xml.bind.annotation.*;
 import lombok.Data;
 import lombok.Getter;
@@ -23,10 +25,12 @@ public class TicketComment {
     @Id
     private Long commentId;
     @XmlElement
-    private Long ticketId;
+    @Pattern(regexp = "\\d+", message = "Must contain only digits")
+    private String ticketId;
     @XmlElement
     private String name;
     @XmlElement
+    @NotEmpty
     private String message;
     @XmlElement
     private String ticketCreateDateTime;

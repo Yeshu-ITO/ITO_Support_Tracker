@@ -6,14 +6,20 @@ import ITO.Application.ItoSupportTracker.service.UserService;
 import ITO.Application.ItoSupportTracker.service.adminService;
 import ITO.Application.ItoSupportTracker.utility.Constants;
 import com.marklogic.client.ResourceNotFoundException;
+import jakarta.validation.Valid;
 import jakarta.xml.bind.JAXBException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/admin")
+@Validated
 public class adminController {
 
     @Autowired
@@ -82,12 +88,21 @@ public class adminController {
 
 
     @PostMapping("/addComment")
-    public ResponseEntity<Object> addCommentToUserTicket(@RequestBody TicketComment ticketComment, @RequestParam Long adminId) {
+    public ResponseEntity<Object> addCommentToUserTicket(@Valid @RequestBody TicketComment ticketComment, @RequestParam Long adminId) {
         try{
             this.adminService.addAdminComment(ticketComment,adminId);
             return ResponseEntity.status(HttpStatus.OK).body("Comment added Successfully");
         }
         catch (RuntimeException | JAXBException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/byDate")
+    public ResponseEntity<Object> getTicketsByDate(@RequestParam String date) {
+        try{
+            return ResponseEntity.ok(this.adminService.getTicketsByDate(date));
+        }catch (JAXBException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

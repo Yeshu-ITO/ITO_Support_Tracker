@@ -63,12 +63,12 @@ public class UserController {
     }
 
     @PostMapping("/addComment")
-    public ResponseEntity<Object> addCommentToUserTicket(@RequestBody TicketComment ticketComment, @RequestParam Long userId) throws JAXBException {
+    public ResponseEntity<Object> addCommentToUserTicket(@Valid @RequestBody TicketComment ticketComment, @RequestParam Long userId){
         try{
             this.userService.addComment(ticketComment,userId);
             return ResponseEntity.status(HttpStatus.OK).body("Comment added Successfully");
         }
-        catch (ResourceNotFoundException e){
+        catch (ResourceNotFoundException | JAXBException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

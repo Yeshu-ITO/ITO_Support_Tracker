@@ -3,9 +3,9 @@ package ITO.Application.ItoSupportTracker.service;
 import ITO.Application.ItoSupportTracker.model.Ticket;
 import ITO.Application.ItoSupportTracker.model.TicketComment;
 import ITO.Application.ItoSupportTracker.payload.TicketDto;
-import ITO.Application.ItoSupportTracker.utility.TicketCommentWrapper;
 import jakarta.xml.bind.JAXBException;
 
+import java.util.Date;
 import java.util.List;
 
 public interface adminService {
@@ -21,5 +21,7 @@ public interface adminService {
     void addAdminComment(TicketComment ticketComment, Long ticketId) throws JAXBException;
 
     List<TicketDto> getAssigneeTickets(Long assigneeId) throws JAXBException;
+
+    List<TicketDto> getTicketsByDate(String date) throws JAXBException;
 
 }

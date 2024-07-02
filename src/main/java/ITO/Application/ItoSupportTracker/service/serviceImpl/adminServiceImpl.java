@@ -33,6 +33,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -46,9 +47,6 @@ public class adminServiceImpl implements adminService {
 
     @Autowired
     private ModelMapper modelMapper;
-
-    @Autowired
-    private TicketCommentWrapper ticketCommentWrapper;
 
     @Autowired
     private ITO.Application.ItoSupportTracker.repository.adminRepository adminRepository;
@@ -304,5 +302,47 @@ public class adminServiceImpl implements adminService {
             allTicketsOfAssignee.add(ticketDto);
         }
         return allTicketsOfAssignee;
+    }
+
+    /**
+     * @param date
+     * @return
+     */
+    @Override
+    public List<TicketDto> getTicketsByDate(String date) throws JAXBException {
+
+        List<TicketDto> allTicketsByDate = new ArrayList<>();
+
+        QueryManager queryManager = marklogicConnection.client.newQueryManager();
+        StructuredQueryBuilder queryBuilder = queryManager.newStructuredQueryBuilder();
+        String startDateTime = date + "T00:00:00";
+        String endDateTime = date + "T23:59:59";
+
+        StructuredQueryDefinition structuredQueryDefinition =
+                queryBuilder.and(
+                        queryBuilder.collection(constants.TICKET_COLLECTION),
+                        queryBuilder.range(queryBuilder.pathIndex("/UserTicket/createDateTime"),"string", StructuredQueryBuilder.Operator.GE,startDateTime),
+                        queryBuilder.range(queryBuilder.pathIndex("/UserTicket/createDateTime"),"string", StructuredQueryBuilder.Operator.LE,endDateTime)
+                );
+
+        SearchHandle resultHandle = queryManager.search(structuredQueryDefinition,new SearchHandle());
+
+        for (MatchDocumentSummary result : resultHandle.getMatchResults()) {
+
+            StringHandle contentHandle = new StringHandle();
+
+            marklogicConnection.docMgr.read(result.getUri(), contentHandle);
+
+            // Unmarshal XML content to Ticket object
+            JAXBContext context = JAXBContext.newInstance(Ticket.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            StringReader reader = new StringReader(contentHandle.get());
+            Ticket ticket = (Ticket) unmarshaller.unmarshal(reader);
+
+            // Map Ticket object to TicketDto using ModelMapper
+            TicketDto ticketDto = this.modelMapper.map(ticket, TicketDto.class);
+            allTicketsByDate.add(ticketDto);
+        }
+        return allTicketsByDate;
     }
 }
