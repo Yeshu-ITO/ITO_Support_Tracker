@@ -15,9 +15,9 @@ public class MarklogicConnection {
     public final XMLDocumentManager docMgr;
 
     public MarklogicConnection() {
-        client = DatabaseClientFactory.newClient("localhost", 8000, "JavaAPI",
-                new DatabaseClientFactory.DigestAuthContext("admin", "admin"));
-        docMgr = client.newXMLDocumentManager();
+            client = DatabaseClientFactory.newClient("localhost", 8000, "JavaAPI",
+                    new DatabaseClientFactory.DigestAuthContext("admin", "admin"));
+            docMgr = client.newXMLDocumentManager();
     }
 
 }

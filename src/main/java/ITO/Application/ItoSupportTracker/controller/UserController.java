@@ -25,6 +25,10 @@ public class UserController {
     @Autowired
     private adminService adminService;
 
+    /**
+     * @param ticket - The Ticket Object that needs to be added
+     * @param userId - The User ID of the Ticket Creator
+     */
     @PostMapping("/addTicket")
     public ResponseEntity<Object> createTicket(@Valid @RequestBody Ticket ticket, @RequestParam Long userId) {
         try {
@@ -38,6 +42,10 @@ public class UserController {
         }
     }
 
+    /**
+     *
+     * @param userId - The user ID of whom the Tickets as to be fetched
+     */
     @GetMapping("/allTickets")
     public ResponseEntity<Object> getUserTickets(@RequestParam(value = "userId", defaultValue = "0",required = false) Long userId){
         try{
@@ -52,6 +60,11 @@ public class UserController {
         }
     }
 
+    /**
+     *
+     * @param userId - The userId of whom the Ticket as to be fetched.
+     * @param ticketId - The Ticket which as to be Fetched which belongs to the UserId
+     */
     @GetMapping("/ticketId")
     public ResponseEntity<Object> getUserTicketById(@RequestParam Long userId, @RequestParam Long ticketId){
         try{
@@ -62,6 +75,11 @@ public class UserController {
         }
     }
 
+    /**
+     *
+     * @param ticketComment - The TicketComment Object that needs to be added
+     * @param userId - The userId of the user who is adding the TicketComment
+     */
     @PostMapping("/addComment")
     public ResponseEntity<Object> addCommentToUserTicket(@Valid @RequestBody TicketComment ticketComment, @RequestParam Long userId){
         try{

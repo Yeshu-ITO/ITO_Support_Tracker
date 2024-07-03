@@ -42,6 +42,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MarklogicConnection marklogicConnection;
 
+    /**
+     * @param ticket The Ticket Object
+     * @param userId User ID who is creating the Ticket
+     * @throws JAXBException
+     *
+     * Method to Create a new Ticket into the database
+     */
     @Override
     public void createTicket(Ticket ticket, Long userId) throws JAXBException {
 
@@ -100,6 +107,10 @@ public class UserServiceImpl implements UserService {
         this.userRepository.createTicket(ticket, metadataHandle);
     }
 
+    /**
+     * @param userId User ID to get All the Tickets belonging to that user
+     * @return List<TicketDto> List of all the Tickets Belonging to the user (Return TicketDtos)
+     */
     @Override
     public List<TicketDto> getAllTicketOfUser(Long userId) throws JAXBException {
 
@@ -118,6 +129,12 @@ public class UserServiceImpl implements UserService {
             throw new ResourceNotFoundException("Invalid User Id");
     }
 
+    /**
+     *
+     * @param ticketId Ticket ID to be Fetched
+     * @param userId User ID to be Fetched
+     * @return Ticket object is returned
+     */
     @Override
     public Ticket getTicketDetails(Long ticketId, Long userId) throws JAXBException {
 
@@ -131,6 +148,11 @@ public class UserServiceImpl implements UserService {
             throw new ResourceNotFoundException("Invalid Ticket Id : " + ticketId + " and User Id : " + userId);
     }
 
+    /**
+     *
+     * @param ticketComment TicketComment object to be added
+     * @param userId The user ID by whom the ticket is being added
+     */
     @Override
     public void addComment(TicketComment ticketComment, Long userId) throws JAXBException {
 

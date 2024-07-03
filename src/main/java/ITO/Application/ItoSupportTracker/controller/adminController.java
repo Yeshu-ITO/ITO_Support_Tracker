@@ -28,7 +28,11 @@ public class adminController {
     @Autowired
     private UserService userService;
 
-
+    /**
+     *
+     * @param userId - userId to fetch Tickets based on the Users
+     * @param assigneeId -  assigneeId to fetch Tickets based on the Assignees
+     */
     @GetMapping("/allTickets")
     public ResponseEntity<Object> getAllTickets(@RequestParam(value = "userId", defaultValue = "0",required = false) Long userId,
                                                 @RequestParam(value = "assigneeId", defaultValue = "0",required = false) Long assigneeId)
@@ -49,7 +53,10 @@ public class adminController {
         }
     }
 
-
+    /**
+     *
+     * @param ticketId - Ticket ID of which the Details as to be Fetched.
+     */
     @GetMapping("/getTicketDetails")
     public ResponseEntity<Object> getTicketDetails(@RequestParam Long ticketId) {
         try{
@@ -60,7 +67,11 @@ public class adminController {
         }
     }
 
-
+    /**
+     *
+     * @param ticketId - The TicketId for which the Assignee as to be set
+     * @param assigneeId - The Assignee ID which as to be set for the Ticket.
+     */
     @PostMapping("/setAssignee")
     public ResponseEntity<String> setAssignee(@RequestParam Long ticketId, @RequestParam Long assigneeId){
         try{
@@ -72,7 +83,12 @@ public class adminController {
         }
     }
 
-
+    /**
+     *
+     * @param ticketId - The ticketId of which the status as to be changed
+     * @param userId -  The userId of the Ticket Creator
+     * @param statusId -  The Status ID which as to be updated for the Ticket
+     */
     @PostMapping("/changeStatus")
     public ResponseEntity<Object> changeStatus(@RequestParam Long ticketId, @RequestParam Long userId, @RequestParam Long statusId){
 
@@ -86,7 +102,11 @@ public class adminController {
 
     }
 
-
+    /**
+     *
+     * @param ticketComment - The TicketComment Which as to be added
+     * @param adminId - The AdminId of the admin who is adding the TicketComment
+     */
     @PostMapping("/addComment")
     public ResponseEntity<Object> addCommentToUserTicket(@Valid @RequestBody TicketComment ticketComment, @RequestParam Long adminId) {
         try{
@@ -98,6 +118,10 @@ public class adminController {
         }
     }
 
+    /**
+     *
+     * @param date - The Date of which the Tickets as to be Fetched
+     */
     @GetMapping("/byDate")
     public ResponseEntity<Object> getTicketsByDate(@RequestParam String date) {
         try{

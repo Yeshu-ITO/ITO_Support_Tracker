@@ -55,8 +55,7 @@ public class adminServiceImpl implements adminService {
     private IdGenerator idGenerator;
 
     /**
-     * @return
-     * @throws JAXBException
+     * @return List<TicketDto> is returned , It contains all the tickets based on parameter
      */
     @Override
     public List<TicketDto> getAllTickets() throws JAXBException {
@@ -83,9 +82,8 @@ public class adminServiceImpl implements adminService {
     }
 
     /**
-     * @param ticketId
-     * @return
-     * @throws JAXBException
+     * @param ticketId Ticket ID of which the ticket Details has to be fetched.
+     * @return Ticket Object containing the ticket Details
      */
     @Override
     public Ticket getTicketDetails(Long ticketId) throws JAXBException {
@@ -105,9 +103,8 @@ public class adminServiceImpl implements adminService {
     }
 
     /**
-     * @param ticketId
-     * @param assigneeId
-     * @throws JAXBException
+     * @param ticketId for which the Assignee as to be set.
+     * @param assigneeId - Admin iD which as to be assignee with the ticket
      */
     @Override
     public void setAssignee(Long ticketId, Long assigneeId) throws JAXBException {
@@ -149,10 +146,9 @@ public class adminServiceImpl implements adminService {
     }
 
     /**
-     * @param ticketId
-     * @param userId
-     * @param statusId
-     * @return
+     * @param ticketId The Ticket ID for which the status as to be changed
+     * @param userId The User ID for which the status as to be changed
+     * @param statusId The status ID which as to be set for the Ticket (OPEN,ASSIGNED,IN_PROGRESS,COMPLETED)
      */
     @Override
     public String changeStatus(Long ticketId, Long userId, Long statusId) {
@@ -194,9 +190,8 @@ public class adminServiceImpl implements adminService {
     }
 
     /**
-     * @param ticketComment
-     * @param adminId
-     * @throws JAXBException
+     * @param ticketComment The TicketComment Object Which needs to be added
+     * @param adminId The Admin ID of the admin who is adding the comment
      */
     @Override
     public void addAdminComment(TicketComment ticketComment, Long adminId) throws JAXBException {
@@ -265,9 +260,8 @@ public class adminServiceImpl implements adminService {
     }
 
     /**
-     * @param assigneeId
-     * @return
-     * @throws JAXBException
+     * @param assigneeId The Assignee ID of whom all the tickets as to be Fetched
+     * @return List<TicketDto> is returned where the assignee ID is equal to assigneeId
      */
     @Override
     public List<TicketDto> getAssigneeTickets(Long assigneeId) throws JAXBException {
@@ -305,8 +299,8 @@ public class adminServiceImpl implements adminService {
     }
 
     /**
-     * @param date
-     * @return
+     * @param date The Date of which the Tickets as to be Fetched
+     * @return List<TicketDto> is returned based on the date
      */
     @Override
     public List<TicketDto> getTicketsByDate(String date) throws JAXBException {
