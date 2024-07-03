@@ -210,7 +210,7 @@ public class adminServiceImpl implements adminService {
 
             //Check if Ticket Exists
             String path = "/UserTicket/ticketId";
-            SearchHandle searchHandle = adminRepository.getTicketDetails(ticketComment.getCommentId(),path);
+            SearchHandle searchHandle = adminRepository.getTicketDetails(ticketComment.getTicketId(),path);
             MatchDocumentSummary[] results = searchHandle.getMatchResults();
             if(results.length != 1)
                 throw new ResourceNotFoundException("Invalid Ticket Id");
